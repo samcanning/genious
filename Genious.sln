@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.1525
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Genious", "Genious\Genious.csproj", "{2F4A3C74-C710-49DF-B703-35592F9585B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Genious", "Genious\Genious.csproj", "{2F4A3C74-C710-49DF-B703-35592F9585B3}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "GeniousDB", "GeniousDB\GeniousDB.sqlproj", "{ACE503C2-226D-4DF1-9D6D-D8554E25EF09}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,12 @@ Global
 		{2F4A3C74-C710-49DF-B703-35592F9585B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F4A3C74-C710-49DF-B703-35592F9585B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F4A3C74-C710-49DF-B703-35592F9585B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACE503C2-226D-4DF1-9D6D-D8554E25EF09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACE503C2-226D-4DF1-9D6D-D8554E25EF09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACE503C2-226D-4DF1-9D6D-D8554E25EF09}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{ACE503C2-226D-4DF1-9D6D-D8554E25EF09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACE503C2-226D-4DF1-9D6D-D8554E25EF09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACE503C2-226D-4DF1-9D6D-D8554E25EF09}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
