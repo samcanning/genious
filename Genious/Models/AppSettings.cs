@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-
-namespace Genious.Models
+﻿namespace Genious.Models
 {
     public class AppSettings
     {
