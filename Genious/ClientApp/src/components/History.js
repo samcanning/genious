@@ -8,15 +8,15 @@ export class History extends Component {
     render() {
         const questions = this.props.items.map((i) => {
             let value = "";
-            if (i.a.value === "1") {
+            if (i.a.Value === 1) {
                 value = "Yes";
-            } else if (i.a.value === "2") {
+            } else if (i.a.Value === 2) {
                 value = "No";
-            } else if (i.a.value === "3") {
+            } else if (i.a.Value === 3) {
                 value = "Don't know";
-            } else if (i.a.value === "4") {
+            } else if (i.a.Value === 4) {
                 value = "Probably";
-            } else if (i.a.value === "5") {
+            } else if (i.a.Value === 5) {
                 value = "Probably not";
             }
 
