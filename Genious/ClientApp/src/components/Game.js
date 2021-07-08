@@ -1,6 +1,8 @@
 ﻿import React, { Component } from 'react';
 import { Question } from './Question';
 import { History } from './History';
+import { Character } from './Character';
+import { Search } from './Search';
 
 export class Game extends Component {
     constructor(props) {
@@ -9,16 +11,31 @@ export class Game extends Component {
             activeQuestion: null,
             history: [],
             characters: [],
-            inProgress: false
+            inProgress: false,
+            incorrect: false,
+            name: null,
+            searchResults: null,
+            playButtonText: "Play"
         };
         this.startGame = this.startGame.bind(this);
         this.handleAnswer = this.handleAnswer.bind(this);
         this.askQuestion = this.askQuestion.bind(this);
         this.finalizeResults = this.finalizeResults.bind(this);
+        this.updateName = this.updateName.bind(this);
+        this.searchName = this.searchName.bind(this);
+        this.confirmName = this.confirmName.bind(this);
     }
 
     startGame() {
-        this.setState({ inProgress: true }, () => this.askQuestion());
+        this.setState({
+            activeQuestion: null,
+            history: [],
+            characters: [],
+            inProgress: true,
+            incorrect: false,
+            name: null,
+            searchResults: null
+        }, () => this.askQuestion());
     }
 
     askQuestion() {
@@ -45,7 +62,7 @@ export class Game extends Component {
             let q = prevState.activeQuestion;
             let a = {
                 QuestionId: q.questionId,
-                Value: parseInt(e)
+                Value: parseInt(e, 10)
             };
             return {
                 activeQuestion: null,
@@ -65,8 +82,7 @@ export class Game extends Component {
                 .then(data => {
                     this.setState({ characters: data }, () => {
                         if (this.state.characters.length === 0) {
-                            //prompt user for character name
-                            alert("I give up!");
+                            this.setState({ incorrect: true });
                         } else if (this.state.characters.length === 1) {
                             this.setState({ activeQuestion: null });
                         } else {
@@ -93,25 +109,55 @@ export class Game extends Component {
 
         fetch('/Game/FinalizeResults', options).then(response => response.json())
             .then(data => {
-                console.log(data);
+                this.setState({
+                    characters: [data],
+                    inProgress: false,
+                    incorrect: false,
+                    playButtonText: "Play again"
+                });
             });
+    }
+
+    updateName(e) {
+        this.setState({ name: e.target.value });
+    }
+
+    searchName() {
+        let options = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accepted': 'application/json' },
+            body: JSON.stringify(this.state.name)
+        };
+
+        fetch('/Game/SearchCharacter', options).then(response => response.json())
+            .then(data => this.setState({ searchResults: data }));
+    }
+
+    confirmName(e) {
+        let characterId = e.target.getAttribute("data-id");
+        this.setState({ characters: [{ CharacterId: characterId }] }, () => this.finalizeResults(false));
     }
 
     render() {
         return (
             <div>
                 <h1>Genious</h1>
-                <button className="btn btn-primary" onClick={this.startGame} style={{ display: this.state.inProgress ? "none" : "" }}>Play</button>
-                { this.state.characters.length === 1 &&
-                    <div>
-                        { this.state.characters[0].imageLink != null &&
-                            <img src={this.state.characters[0].imageLink} alt={this.state.characters[0].name} />
-                        }
-                        <p>Is your character {this.state.characters[0].name}?</p>
-                        <button className="btn btn-success" onClick={() => this.finalizeResults(false)}>Yes</button>
-                        &nbsp;
-                        <button className="btn btn-danger" onClick={() => alert("You win!")}>No</button>
-                    </div>
+                { (!this.state.incorrect && this.state.characters.length === 1) &&
+                    <Character
+                        name={this.state.characters[0].name}
+                        source={this.state.characters[0].source}
+                        imageLink={this.state.characters[0].imageLink}
+                        confirmed={!this.state.inProgress}
+                        finalizeResults={this.finalizeResults}
+                    />
+                }
+                {
+                    this.state.incorrect &&
+                    <Search results={this.state.searchResults} updateName={this.updateName} searchName={this.searchName} selectName={this.confirmName} />
+                }
+                {
+                    !this.state.inProgress &&
+                    <button className="btn btn-primary" onClick={(e) => this.startGame(e)}>{this.state.playButtonText}</button>
                 }
                 { this.state.activeQuestion != null &&
                     <Question
@@ -120,7 +166,9 @@ export class Game extends Component {
                         submitAnswer={this.handleAnswer}
                     />
                 }
-                <History items={this.state.history} />
+                { !this.state.incorrect &&
+                    <History items={this.state.history} />
+                }
             </div>
         );
     }

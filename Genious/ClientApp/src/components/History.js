@@ -24,7 +24,7 @@ export class History extends Component {
         });
 
         return (
-            <div id="previousQuestions">
+            <div id="previousQuestions" style={{ marginTop: "10px" }}>
                 <ul>
                     {questions}
                 </ul>
